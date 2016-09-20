@@ -12,6 +12,7 @@ import java.util.Random;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import sofeel.com.realmtest.model.Cat;
 import sofeel.com.realmtest.model.User;
@@ -134,12 +135,24 @@ public class MyAdapter extends BaseAdapter implements View.OnClickListener{
     }
 
     private void insert() {
-        realm.beginTransaction();
-        User user =new User();
-        user.setId(new Random().nextInt());
+        User user = new User();
+        Random random = new Random();
+        user.setId(random.nextInt());
         user.setName("person_1");
         user.setAge(1);
+
+        Cat cat = new Cat();
+        cat.name="lili";
+        cat.age=55;
+
+        RealmList<Cat> cats = new RealmList<>();
+        cats.add(cat);
+        user.setCats(cats);
+
+        realm.beginTransaction();
         realm.copyToRealm(user);
         realm.commitTransaction();
+
+        Log.i(TAG+".insert()","insert ok!");
     }
 }
